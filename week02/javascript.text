@@ -1,0 +1,14 @@
+javascript:(词法部分,整理后放入xmind中吧)
+	1.字符集:
+		(1)Unicode(javascript仅支持unicode编码,没有对其他字符集的支持)
+			Unicode 是「字符集」
+			UTF-8 是「编码规则」
+			字符集：为每一个「字符」分配一个唯一的 ID（学名为码位 / 码点 / Code Point）
+			编码规则：将「码位」转换为字节序列的规则（编码/解码 可以理解为 加密/解密 的过程）
+				1.码点:每个字符集都有一个对应的正整数,此正整数称为码点
+					例:a的码点是97  A是65
+				2.blocks和categorys
+					for(let i = 0;i<128;i++){
+						console.log(String.fromCharCode(i));
+					}
+		

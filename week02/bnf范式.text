@@ -1,0 +1,59 @@
+语言按语法分类:
+1.非形式语言
+	中文,英文
+2.形式语言
+	0型:无限制文法
+	1型:上下文相关文法
+	2型:上下文无关文法
+	3型:正则文法
+
+"a"
+"b"
+<Program>:="a"+ | "b"+
+<Program>:=<Program> "a"+ | <Program> "b"+
+
+<Number>:="0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+<DecimalNumber>:="0" | ("1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9") <Number>*
+加法
+<AdditiveExpression>:=<DecimalNumber> | <AdditiveExpression> "+" <DecimalNumber>
+乘法
+<MulticativeExpression>:=<DecimalNumber> | <MulticativeExpression> "*" <DecimalNumber>
+
+1 + 2 * 3(加号的左项是1,右项是2*3)
+<AdditiveExpression>:=<MulticativeExpression> | <AdditiveExpression> "+" <MulticativeExpression>
+
+图灵完备性:跟图灵机等效的都是成为具有图灵完备性
+图灵机:凡是可计算的都能计算出来
+图灵机实现方式:goto,if while
+
+动态与静态
+动态:
+在用户的设备上/在线服务器上
+产品实际运行时
+Runtime
+
+静态:
+在开发者的设备上
+产品开发时
+compiletime
+
+类型系统:
+动态类型系统与静态类型系统
+强类型与弱类型(二者之间的区别，就在于计算时是否可以不同类型之间对使用者透明地隐式转换)
+	String+Number  (String)
+	String==Boolean
+弱类型:
+从使用者的角度来看，如果一个语言可以隐式转换它的所有类型，那么它的变量、表达式等在参与运算时，
+即使类型不正确，也能通过隐式转换来得到正确地类型，这对使用者而言，就好像所有类型都能进行所有运算一样，所以这样的语言被称作弱类型。
+例:在循环语句中（if，while）中，一个Object对象可以隐式的转换从BOOLEAN值。
+var obj = {name:'jack'}
+if(obj){
+    //do more
+}
+强类型
+与此相对，强类型语言的类型之间不一定有隐式转换。强类型语言也称为强类型定义语言。
+是一种总是强制类型定义的语言，要求变量的使用要严格符合定义，所有变量都必须先定义后使用。
+
+复合类型
+	结构体
+	函数签名	例:(T1,T2)=>T3
