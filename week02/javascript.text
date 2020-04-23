@@ -1,5 +1,5 @@
 javascript:(词法部分,整理后放入xmind中吧)
-	1.字符集:
+	1.SourceCharacter(字符集):
 		(1)Unicode(javascript仅支持unicode编码,没有对其他字符集的支持)
 			Unicode 是「字符集」
 			UTF-8 是「编码规则」
@@ -11,4 +11,37 @@ javascript:(词法部分,整理后放入xmind中吧)
 					for(let i = 0;i<128;i++){
 						console.log(String.fromCharCode(i));
 					}
-		
+	2.inputElement
+		whiteSpace
+			空格,所有的unicode空格都可以
+			<TAB>
+				
+			<VT>
+				纵向制表符
+			<FF>
+				fontfeed
+			<SP>
+				普通空格
+			<NBSP>
+				no-break space
+				例:learn javascript today.  宽度不够会换行,换行换在词之间
+				learn$nbsp;javascript today.宽度不够会换行,但learn跟javascript不分开
+			<ZWNBSP>
+			零宽空格
+			<BOM>
+			Bit Order Mask
+			<USP>
+				包含以上的space,以上的都在unicode编码内可以找到
+		LineTerminator
+			换行
+			
+		Comment
+			注释
+			单行://
+			多行:/**/   不支持嵌套
+		Token
+			javascript里一切有效的东西都叫token
+			
+			Identifier
+			Punctuator
+			Literal
