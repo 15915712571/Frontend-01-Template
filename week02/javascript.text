@@ -42,6 +42,38 @@ javascript:(词法部分,整理后放入xmind中吧)
 		Token
 			javascript里一切有效的东西都叫token
 			
-			Identifier
+			帮助程序形成结构：
 			Punctuator
+				符号  括号等号之类的
+			
+			代码里的有效信息：
+			IdentifierName:
+				Identifier（必须以英文字母开头,在unicode编码里有ID_START属性的字符，也包括中文等等）
+					any unicode code point with the unicode property 'ID_START'
+					标识符
+					1.用作变量名的部分：
+					document,var,let
+					var foo	；foo就称为标识符（变量名）var就是变量名的部分，foo就是属性的部分
+					不能包含关键字或重合
+					2.用作属性部分
+					可以包含关键字或重合
+				keywords
+				future reserverd keywords：enum
+				保留关键字，即现在还没成为关键字，但以后可能会是
 			Literal
+				直接量  1 true
+				Number
+					IEEE 754 Double Float标准
+						Sign符号位(1)
+						Exponent(11)
+							科学计数法乘上去的那一部分
+						Fraction(52)
+							精度部分，表示他的值
+				Boolean
+				String
+				Undefined
+				Object
+				Null
+				Symbol
+				
+			

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<script>
+			var a = 0.1;
+			var b = 0.2;
+			
+			const memory = new Float64Array(1);
+			memory[0] = a;
+			// console.log(memory,'memory')
+			
+			const intArr = new Uint8Array(memory.buffer);
+			// console.log(intArr,'intArr')
+			
+			for (let i = 0; i < 8; i++) {
+				let s = intArr[i].toString(2);
+				console.log(new Array(9 - s.length).join('0'))
+			}
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
