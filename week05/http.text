@@ -1,0 +1,8 @@
+Request
+Response
+
+POST / HTTP /1.1		request line
+Host:127.0.0.1
+Content-Type:application/x-www-form-urlencoded		headers
+空行
+field1=aaa&code=x%3D1	body
