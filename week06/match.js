@@ -67,4 +67,4 @@ function foundX(c) {
 }
 
 //目标匹配abababx
-console.log(match('i am gaabababxaadd'))
+console.log(match('i am gaabbaabababxaadd'))
