@@ -3,6 +3,22 @@
 //在html的标准中,已经规定了html的状态
 //toy-BROWSER只挑选其中的一部分状态,完成一个最简版本
 
+/*
+	第一步:
+		为了方便文件管理,我们把parser单独拆到文件中
+		parser接受HTML文本作为参数,返回一颗dom树
+	第二步:
+		创建状态机
+	第三步:
+		解析标签
+	第四步:
+		在状态机中,除了状态迁移,我们还会要加入业务逻辑(改变全局currenToekn),我们在标签结束状态提交标签token
+	第五步:
+		处理属性
+	第六步:
+		处理属性
+*/
+
 const css = require('css');
 
 const EOF = Symbol("EOF");
