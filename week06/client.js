@@ -1,4 +1,5 @@
 const net = require('net');
+const parser = require('./parser.js')
 
 class Request {
 	constructor(options) {
@@ -149,48 +150,47 @@ class ResponseParser {
 
 class ChunkedBodyParser {
 	constructor() {
-		this.READING_LENGTH_FIRSR_CHAR = 0;
-		this.READING_LENGTH = 1;
-		this.READING_LENGTH_END = 2;
-		this.READING_CHUNK = 3;
-		this.READING_CHUNK_END = 4;
-		this.BODY_BLOCK_END = 5;
-
-		this.current = this.READING_LENGTH_FIRSR_CHAR;
-		this.content = []
-		this.chunkLength = 0
+		this.WAITING_LENGTH = 0;
+		this.WAITING_LENGTH_LINE_END = 1;
+		this.READING_TRUNK = 2;
+		this.WAITING_NEW_LINE = 3;
+		this.WAITING_NEW_LINE_END = 4;
+		this.length = 0;
+		this.content = [];
+		this.isFinished = false;
+		this.current = this.WAITING_LENGTH;
 	}
-
-	get isFinished() {
-		return this.current === this.BODY_BLOCK_END
-	}
-
 	receiveChar(char) {
-		if (this.current === this.READING_LENGTH_FIRSR_CHAR) { // Length的第一个字符是单独一个状态
-			if (char === '0') { // Length的第一个字符是'0'的话就是终止块
-				this.current = this.BODY_BLOCK_END;
-			} else {
-				this.chunkLength += Number(`0x${char}`); // chunk-length在包体是16进制
-				this.current = this.READING_LENGTH;
-			}
-		} else if (this.current === this.READING_LENGTH) {
+		if (this.current === this.WAITING_LENGTH) {
 			if (char === '\r') {
-				this.current = this.READING_LENGTH_END;
+				if (this.length === 0) {
+					// console.log(this.content);
+					this.isFinished = true;
+				}
+				this.current = this.WAITING_LENGTH_LINE_END;
 			} else {
-				this.chunkLength = this.chunkLength * 16 + Number(`0x${char}`);
+				this.length *= 16;
+				this.length += parseInt(char, 16);
+				//this.length += char.charCodeAt(0) - '0'.charCodeAt(0); //Number(char);
 			}
-		} else if (this.current === this.READING_LENGTH_END) {
-			this.current = this.READING_CHUNK;
-		} else if (this.current === this.READING_CHUNK) {
+		} else if (this.current === this.WAITING_LENGTH_LINE_END) {
+			if (char === '\n') {
+				this.current = this.READING_TRUNK;
+			}
+		} else if (this.current === this.READING_TRUNK) {
+			this.content.push(char);
+			this.length--;
+			if (this.length === 0) {
+				this.current = this.WAITING_NEW_LINE;
+			}
+		} else if (this.current === this.WAITING_NEW_LINE) {
 			if (char === '\r') {
-				this.current = this.READING_CHUNK_END
-				this.chunkLength = 0
-			} else if (this.chunkLength > 0) {
-				this.content.push(char);
-				this.chunkLength -= 1;
+				this.current = this.WAITING_NEW_LINE_END;
 			}
-		} else if (this.current === this.READING_CHUNK_END) {
-			this.current = this.READING_LENGTH_FIRSR_CHAR;
+		} else if (this.current === this.WAITING_NEW_LINE_END) {
+			if (char === '\n') {
+				this.current = this.WAITING_LENGTH;
+			}
 		}
 	}
 }
@@ -209,5 +209,8 @@ void async function() {
 		}
 	});
 
-	await request.send()
+	let response = await request.send();
+
+	let dom = parser.parseHTML(response.body)
+	console.log(dom)
 }();
