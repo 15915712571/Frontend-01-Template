@@ -131,7 +131,7 @@
 	inline-formatting-context(ifc)	从左到右排列
 	block-formatting-context(bfc)	从上到下排列
 	
-	正常流的行模型(ifc)
+	正常流的行模型(ifc):
 		中文是不管基线的,其它字母是有基线(baseline)的,英文的基线就是字母的最下沿.
 		一个line-box,如果里面没有任何文字,那么它的基线在底部.始终使用最高的元素作为顶沿跟低沿.
 		(若有子元素的高度超过了行的line-height属性,那么始终拿这个最高的子元素作为行高,并且会始终保证最高的元素的对齐方式是正确的)
@@ -139,7 +139,55 @@
 		vertical-align:baseline是拿自己的baseline去对齐行的baseline.
 		vertical-align:top,middle,bottom是拿自己的顶部中线底部去对齐行的
 		
-	float与clear
-		float:
+	float与clear:
+		实现海量的文字绕排(环绕或者混排)的时候选择用float.
+		float有可能发生重排.
+		脱离文档流:元素不在任何一个行盒里.
 		
+	margin折叠:
+		只会发生在bfc里
+		多个bfc之间也会发生折叠,除非设置overflow:hidden属性,形成一个独立的新的bfc块.(display:inline-block,)
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="overflow:hidden;">
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			</div>
 		
+		一个bfc里面要满足所有元素的留白需求(margin)
+		
+		特例:
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			<div style="overflow:visible;margin-top:30px">
+				<div style="width:100px;height:100px;background-color:blue;margin:40px"></div>
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+				<div style="width:100px;height:100px;background-color:blue;margin:20px"></div>
+			</div>
+			若第二个行盒的容器也存在一个margin的需求,则会跟容器里的margin折叠,此时若容器里的margin大于容器的margin,则会撑开(40px),
+			若容器也设置overflow:hidden;因为容器跟上面的元素还是在同一个bfc里,所以容器跟上面的内容会发生折叠,但是容器的内部跟容器不再发生边距折叠.
+		
+		正常流里放正常流,就可能会发生margin合并.
+	
+	只有block inline-block才是block-container
+	flex,table,grid,block是block-level-box
+	
+	flex inline-flex
+	table inline-table
+	grid inline-grid
+	block inline-block
+	
+	inline
+	
+	run-in
+	
+# flex
+	分行:根据主轴尺寸,把元素分进行里.若设置了no-wrap,则强行分配进第一行.
+	计算交叉轴方向:根据每一行中最大元素尺寸计算行高,根据行高flex-align个item-align,确定元素具体位置.
